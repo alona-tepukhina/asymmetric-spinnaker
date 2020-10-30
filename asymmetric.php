@@ -10,10 +10,10 @@
 		body {font-family:'Roboto';font-weight:300}
 		h1 {font-size:20px}
 		input[type=text] {width:90%}
-		/*.left_column, .right_column {float:left}*/
+		.left_column, .right_column {float:left}
 		.left_column {width:500px; display: none;}
 		.right_column {width:700px; margin-bottom: 30px;}
-		.certificate {clear:both}
+		.certificate {clear:both; margin-left: 11px;}
 		.formRow {clear:both}
 		.formLabel, .formLabelAbbreviation, .inputField {float:left}
 		.formLabel {font-weight:bold;width:200px}
@@ -97,19 +97,20 @@
         }
 
 
-        /*
-        .calc_container{font-size: smaller;
-            display:none;
-        }*/
+        
+        .calc_container{
+            font-size: smaller;
+            margin-top: 30px;
+            margin-left: 11px;    
+        }
 
 
         .calc_container>div{
 			padding: 10px;
-			border: 1px solid #9E9E9E;
 		}
 
 		.calc_container,.panel-left, #asym_spinnaker_cont, #asym-1_calcs_cont{
-		/*	display: flex;*/
+			display: flex;
 			flex-wrap: wrap;
 		}
 
@@ -142,8 +143,8 @@
 			text-align: center;
 			padding: 2px 6px;
 			box-sizing: border-box;
-			border: inherit;
-			
+			border: inherit;   
+			height: 20px;
 		}
 
         td{width:50px;}
@@ -1198,7 +1199,7 @@
             <div class="panel-left-1">
                 <div id="inputs">
                     <!--Inputs-->
-                    <h2>Asym spinnaker</h2>
+                    
                     <table>
                         <thead>
                             <tr><th colspan="2">Inputs</th></tr>
@@ -1227,7 +1228,6 @@
 
             <div class="panel-left-2">
                 <div id="asym_spinnaker">
-                    <h2>Asym spinnaker</h2>
                     <div id="asym_spinnaker_cont">
                         <div class="tablecont_left">
                             <table>
@@ -1719,7 +1719,7 @@
         </div><!--panel-left-->
 
         <div class="panel-right">
-            <h2>Asym spinnaker</h2>
+           
 
             <div id="asym-1_calcs_cont">
                 <div class="tablecont_left">
