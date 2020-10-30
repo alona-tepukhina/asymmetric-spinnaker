@@ -345,8 +345,7 @@
             let notLegalMsg=(SD_K7>=(0.75*SD_K8))?"":"<div>THIS IS NOT A LEGAL SPINNAKER<br>HALF WIDTH < 0.75 x FOOT<br>SAIL MUST BE MEASURED AS A HEADSAIL</div>";
              $("#notLegalMsg").html(notLegalMsg);
 
-            console.log("SD_L5: "+SD_L5);
-                
+                         
 				
 			let metersLuffLength = $("input[name=meters_luff_length]").val();
 			let metersLeechLength = $("input[name=meters_leech_length]").val();
@@ -430,290 +429,268 @@
 			if(!SD_K5 || !SD_K6 || ! SD_K7 || !SD_K8)  return false;
 			
 			d3.select("#calc-results").classed('hidden',false);
-			d3.select('#left').transition().duration(300).style('opacity',1);
+            d3.select('#left').transition().duration(300).style('opacity',1);
+            
+            //let Tack_Angle_a_r=ACOS((POW(SF_a,2)+POW(SLU_a,2)-POW(SLE_a,2))/(2*SF_a*SLU_a));
+
+            //sometimes it can't take acos because the value slightly exceeds 1
                
-            				
-                //let Tack_Angle_a_r=ACOS((POW(SF_a,2)+POW(SLU_a,2)-POW(SLE_a,2))/(2*SF_a*SLU_a));
+            let Tack_Angle_a_r=ACOS(ROUND(POW(SF_a,2)+POW(SLU_a,2)-POW(SLE_a,2))/(2*SF_a*SLU_a));
 
-                //sometimes it can't take acos because the value slightly exceeds 1
-               
-                let Tack_Angle_a_r=ACOS(ROUND(POW(SF_a,2)+POW(SLU_a,2)-POW(SLE_a,2))/(2*SF_a*SLU_a));
-
-
-
-                console.log("SF_a: "+SF_a);
-                console.log("SLU_a: "+SLU_a);
-                console.log("SLE_a: "+SLE_a);
-                console.log("Tack_Angle_a_r: "+Tack_Angle_a_r);
-
-				//let Tack_Angle_a_r=5;
-                let Tack_Angle_a_d=DEGREES(Tack_Angle_a_r);
+			//let Tack_Angle_a_r=5;
+            let Tack_Angle_a_d=DEGREES(Tack_Angle_a_r);
                 
-                let TAP_d=(Assumed_Tack_Angle_d>Tack_Angle_a_d)?Assumed_Tack_Angle_d:(65-2*(Assumed_Tack_Angle_d-Tack_Angle_a_d));
-                let TAP_r=RADIANS(TAP_d);
-                let Radians_90=RADIANS(90);
-                let TAPer=TAP_r+Radians_90;
-                let R46=DEGREES(TAPer);
-                let Clew_a_x = SF_a*COS(TAP_r-Tack_Angle_a_r);
-                console.log("Clew_a_x: "+Clew_a_x);
-                let Clew_a_y = SF_a*Math.sin(TAP_r-Tack_Angle_a_r);
-                //let Head_Angle_a_r=ACOS((SLE_a**2+SLU_a**2-SF_a**2)/(2*SLE_a*SLU_a));
-                let Head_Angle_a_r=ACOS(ROUND(SLE_a**2+SLU_a**2-SF_a**2)/(2*SLE_a*SLU_a));
-                
-                
-                let Head_Angle_a_d=DEGREES(Head_Angle_a_r);
-                let Head_a_x=COS(TAP_r)*SLU_a;
-                let Head_a_y=Math.sin(TAP_r)*SLU_a;
-                let R14=RADIANS(180)-Tack_Angle_a_r-Head_Angle_a_r;
-                let Clew_Angle_a_d=DEGREES(R14);
-                let Clew_Height_Angle_r=TAP_r-Tack_Angle_a_r;
-                let Clew_Height_Angle_d=DEGREES(Clew_Height_Angle_r);
-                let SLU_Mid_x=0.5*SLU_a*COS(TAP_r);
-                let SLU_Mid_y=0.5*SLU_a*Math.sin(TAP_r);
-                let SLU_Offset_to_Half_Leech_Factor=1.7*(SHW_a/SF_a)*(SHW_a/SLU_a)*0.15;
-                let SLU_Offset_Length=SLU_Offset_to_Half_Leech_Factor*SLU_a;
-                let FAPer=Clew_Height_Angle_r-Radians_90;
-                let Foot_Offset_Distance=Foot_Offset_Factor*SF_a;
-                let Mid_Foot_x=(0.5*SF_a)*COS(Clew_Height_Angle_r);
-                let Mid_Foot_y=(0.5*SF_a)*Math.sin(Clew_Height_Angle_r);
+            let TAP_d=(Assumed_Tack_Angle_d>Tack_Angle_a_d)?Assumed_Tack_Angle_d:(65-2*(Assumed_Tack_Angle_d-Tack_Angle_a_d));
+            let TAP_r=RADIANS(TAP_d);
+            let Radians_90=RADIANS(90);
+            let TAPer=TAP_r+Radians_90;
+            let R46=DEGREES(TAPer);
+            let Clew_a_x = SF_a*COS(TAP_r-Tack_Angle_a_r);
+            let Clew_a_y = SF_a*Math.sin(TAP_r-Tack_Angle_a_r);
+            let Head_Angle_a_r=ACOS(ROUND(SLE_a**2+SLU_a**2-SF_a**2)/(2*SLE_a*SLU_a));
             
-                let Foot_Offset_x=Mid_Foot_x+(Foot_Offset_Distance*COS(Clew_Height_Angle_r+RADIANS(-90)));
+            let Head_Angle_a_d=DEGREES(Head_Angle_a_r);
+            let Head_a_x=COS(TAP_r)*SLU_a;
+            let Head_a_y=Math.sin(TAP_r)*SLU_a;
+            let R14=RADIANS(180)-Tack_Angle_a_r-Head_Angle_a_r;
+            let Clew_Angle_a_d=DEGREES(R14);
+            let Clew_Height_Angle_r=TAP_r-Tack_Angle_a_r;
+            let Clew_Height_Angle_d=DEGREES(Clew_Height_Angle_r);
+            let SLU_Mid_x=0.5*SLU_a*COS(TAP_r);
+            let SLU_Mid_y=0.5*SLU_a*Math.sin(TAP_r);
+            let SLU_Offset_to_Half_Leech_Factor=1.7*(SHW_a/SF_a)*(SHW_a/SLU_a)*0.15;
+            let SLU_Offset_Length=SLU_Offset_to_Half_Leech_Factor*SLU_a;
+            let FAPer=Clew_Height_Angle_r-Radians_90;
+            let Foot_Offset_Distance=Foot_Offset_Factor*SF_a;
+            let Mid_Foot_x=(0.5*SF_a)*COS(Clew_Height_Angle_r);
+            let Mid_Foot_y=(0.5*SF_a)*Math.sin(Clew_Height_Angle_r);
+            
+            let Foot_Offset_x=Mid_Foot_x+(Foot_Offset_Distance*COS(Clew_Height_Angle_r+RADIANS(-90)));
                 
-                let Foot_Offset_y=Mid_Foot_y+(Foot_Offset_Distance*Math.sin(Clew_Height_Angle_r+RADIANS(-90)));
+            let Foot_Offset_y=Mid_Foot_y+(Foot_Offset_Distance*Math.sin(Clew_Height_Angle_r+RADIANS(-90)));
             
-                let Ext_SLE_Angle_r=RADIANS(180)-TAP_r-Head_Angle_a_r;
-                let Ext_SLE_Angle_d=DEGREES(Ext_SLE_Angle_r);
-                let I37=TAP_r+Head_Angle_a_r;
-                let I38=DEGREES(I37);
-                let LAPer=I37-Radians_90;
-                let R49=DEGREES(LAPer);
+            let Ext_SLE_Angle_r=RADIANS(180)-TAP_r-Head_Angle_a_r;
+            let Ext_SLE_Angle_d=DEGREES(Ext_SLE_Angle_r);
+            let I37=TAP_r+Head_Angle_a_r;
+            let I38=DEGREES(I37);
+            let LAPer=I37-Radians_90;
+            let R49=DEGREES(LAPer);
             
-                let SLU_Half_Leech_Point_x=SQRT((0.5*SLU_a)**2+SLU_Offset_Length**2)*COS(TAP_r+Math.atan(SLU_Offset_Length/(0.5*SLU_a)));
+            let SLU_Half_Leech_Point_x=SQRT((0.5*SLU_a)**2+SLU_Offset_Length**2)*COS(TAP_r+Math.atan(SLU_Offset_Length/(0.5*SLU_a)));
             
-                let SLU_Half_Leech_Point_y=SQRT((0.5*SLU_a)**2+SLU_Offset_Length**2)*Math.sin(TAP_r+Math.atan(SLU_Offset_Length/(0.5*SLU_a)));
+            let SLU_Half_Leech_Point_y=SQRT((0.5*SLU_a)**2+SLU_Offset_Length**2)*Math.sin(TAP_r+Math.atan(SLU_Offset_Length/(0.5*SLU_a)));
 
-                let SLU_Half_Luff_a_x=SLU_Half_Leech_Point_x;
-                let SLU_Half_Luff_a_y=SLU_Half_Leech_Point_y;
+            let SLU_Half_Luff_a_x=SLU_Half_Leech_Point_x;
+            let SLU_Half_Luff_a_y=SLU_Half_Leech_Point_y;
 
-                let SLE_Mid_x=Clew_a_x-(0.5*SLE_a)*COS(Ext_SLE_Angle_r);
-                let SLE_Mid_y=Clew_a_y+(0.5*SLE_a)*Math.sin(Ext_SLE_Angle_r);
+            let SLE_Mid_x=Clew_a_x-(0.5*SLE_a)*COS(Ext_SLE_Angle_r);
+            let SLE_Mid_y=Clew_a_y+(0.5*SLE_a)*Math.sin(Ext_SLE_Angle_r);
 
-                let V4=SLE_Mid_x; 
-                let W4=SLE_Mid_y;
-                let V5=SLU_Offset_Length;
-                let W6=0.75;
-                let V6=W6*V5;
-                let W7=1.25;
-                let V7=W7*V5;
+            let V4=SLE_Mid_x; 
+            let W4=SLE_Mid_y;
+            let V5=SLU_Offset_Length;
+            let W6=0.75;
+            let V6=W6*V5;
+            let W7=1.25;
+            let V7=W7*V5;
 
-                /**500-lines table */
+            /**500-lines table */
 
-                let x_500val=[];
-                let y_500val=[];
-                let dist_500val=[];
-                let SLE_Mid_Luff_Angle=RADIANS(180)-Ext_SLE_Angle_r-Radians_90;
-                let SLE_Mid_Luff_Angle_r=SLE_Mid_Luff_Angle;
-                let Start_for_int_x=SLE_Mid_x+V6*COS(SLE_Mid_Luff_Angle_r);
-                let Start_for_int_y=SLE_Mid_y+V6*Math.sin(SLE_Mid_Luff_Angle_r);
+            let x_500val=[];
+            let y_500val=[];
+            let dist_500val=[];
+            let SLE_Mid_Luff_Angle=RADIANS(180)-Ext_SLE_Angle_r-Radians_90;
+            let SLE_Mid_Luff_Angle_r=SLE_Mid_Luff_Angle;
+            let Start_for_int_x=SLE_Mid_x+V6*COS(SLE_Mid_Luff_Angle_r);
+            let Start_for_int_y=SLE_Mid_y+V6*Math.sin(SLE_Mid_Luff_Angle_r);
 
-                let V12=SQRT((Start_for_int_x-SLU_Half_Luff_a_x)**2+(Start_for_int_y-SLU_Half_Luff_a_y)**2);
+            let V12=SQRT((Start_for_int_x-SLU_Half_Luff_a_x)**2+(Start_for_int_y-SLU_Half_Luff_a_y)**2);
                 
-                let tmp_x=null;
-                let tmp_y=null;
-                let tmp_dist=null;
-                let SHW_Intercept_x=null;
-                let SHW_Intercept_y=null;
-                let SHW_Intercept_dist=null;
-                let nodes=[];
-                let R48=I37-Radians_90;
+            let tmp_x=null;
+            let tmp_y=null;
+            let tmp_dist=null;
+            let SHW_Intercept_x=null;
+            let SHW_Intercept_y=null;
+            let SHW_Intercept_dist=null;
+            let nodes=[];
+            let R48=I37-Radians_90;
 
-                for(let i=1;i<=500;i++){
+            for(let i=1;i<=500;i++){
 
-                    tmp_x=Start_for_int_x+i*Step_Inc*COS(SLE_Mid_Luff_Angle_r);
-                    x_500val.push(tmp_x);
-                    tmp_y=Start_for_int_y+i*Step_Inc*Math.sin(SLE_Mid_Luff_Angle_r);
-                    y_500val.push(tmp_y);
-                    tmp_dist=SQRT((tmp_x-SLU_Half_Luff_a_x)**2+(tmp_y-SLU_Half_Luff_a_y)**2);
-                    nodes.push({x: tmp_x, y: tmp_y});
+                tmp_x=Start_for_int_x+i*Step_Inc*COS(SLE_Mid_Luff_Angle_r);
+                x_500val.push(tmp_x);
+                tmp_y=Start_for_int_y+i*Step_Inc*Math.sin(SLE_Mid_Luff_Angle_r);
+                y_500val.push(tmp_y);
+                tmp_dist=SQRT((tmp_x-SLU_Half_Luff_a_x)**2+(tmp_y-SLU_Half_Luff_a_y)**2);
+                nodes.push({x: tmp_x, y: tmp_y});
 
-                    $("table#500val tbody").append("<tr><th>"+i+"</th><td>"+ROUND(tmp_dist,3)+"</td><td>"+ROUND(tmp_x,3)+"</td><td>"+ROUND(tmp_y,3)+"</td></tr>");
+                $("table#500val tbody").append("<tr><th>"+i+"</th><td>"+ROUND(tmp_dist,3)+"</td><td>"+ROUND(tmp_x,3)+"</td><td>"+ROUND(tmp_y,3)+"</td></tr>");
 
-                    if(ROUND(tmp_dist,2)==SHW_a){
-                        SHW_Intercept_x=tmp_x;
-                        SHW_Intercept_y=tmp_y;
-                        SHW_Intercept_dist=tmp_dist;                        
-                    }
+                if(ROUND(tmp_dist)==SHW_a){
+                    SHW_Intercept_x=tmp_x;
+                    SHW_Intercept_y=tmp_y;
+                    SHW_Intercept_dist=tmp_dist;                        
                 }
-               
-                let SLE_Half_Luff_x=SHW_Intercept_x;
-                let SLE_Half_Luff_y=SHW_Intercept_y;
-                let I4=Tack_a_x;
-                let J4=Tack_a_y;
-                let I9=Tack_a_x;
-                let J9=Tack_a_y;
-                let I10=SLU_Half_Luff_a_x;
-                let J10=SLU_Half_Luff_a_y;
-                let I11=0.37*(Head_a_x-SLU_Half_Luff_a_x)+SLU_Half_Luff_a_x;
-                let J11=0.6*(Head_a_y-SLU_Half_Luff_a_y)+SLU_Half_Luff_a_y;
-                let I12=Head_a_x;
-                let J12=Head_a_y;
-                let I13=Head_a_x;
-                let J13=Head_a_y;
-                let I14=SHW_Intercept_x;
-                let J14=SHW_Intercept_y;
-                let I15=Clew_a_x;
-                let J15=Clew_a_y;
-                let I16=Clew_a_x;
-                let J16=Clew_a_y;
-                let I17=Foot_Offset_x;
-                let J17=Foot_Offset_y;
-                let I18=Tack_a_x;
-                let J18=Tack_a_y;
+            }
+
+            let SLE_Half_Luff_x=SHW_Intercept_x;
+            let SLE_Half_Luff_y=SHW_Intercept_y;
+            let I4=Tack_a_x;
+            let J4=Tack_a_y;
+            let I9=Tack_a_x;
+            let J9=Tack_a_y;
+            let I10=SLU_Half_Luff_a_x;
+            let J10=SLU_Half_Luff_a_y;
+            let I11=0.37*(Head_a_x-SLU_Half_Luff_a_x)+SLU_Half_Luff_a_x;
+            let J11=0.6*(Head_a_y-SLU_Half_Luff_a_y)+SLU_Half_Luff_a_y;
+            let I12=Head_a_x;
+            let J12=Head_a_y;
+            let I13=Head_a_x;
+            let J13=Head_a_y;
+            let I14=SHW_Intercept_x;
+            let J14=SHW_Intercept_y;
+            let I15=Clew_a_x;
+            let J15=Clew_a_y;
+            let I16=Clew_a_x;
+            let J16=Clew_a_y;
+            let I17=Foot_Offset_x;
+            let J17=Foot_Offset_y;
+            let I18=Tack_a_x;
+            let J18=Tack_a_y;
                      
-                let I55=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(Head_a_x+Tick_Offset*COS(TAPer)):0;
+            let I55=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(Head_a_x+Tick_Offset*COS(TAPer)):0;
 
-                let I56=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(I55+Tick_Length*COS(TAPer)):0;
+            let I56=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(I55+Tick_Length*COS(TAPer)):0;
 
-                let I59=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(I55+0.5*Tick_Length*COS(TAPer)):0;
-                let I21=I59;
+            let I59=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(I55+0.5*Tick_Length*COS(TAPer)):0;
+            let I21=I59;
 
-                let I57 = (SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(Tack_a_x+Tick_Offset*COS(TAPer)):0;
+            let I57 = (SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(Tack_a_x+Tick_Offset*COS(TAPer)):0;
 
-                let I58 = (SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(I57+Tick_Length*COS(TAPer)):0;
+            let I58 = (SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(I57+Tick_Length*COS(TAPer)):0;
 
-                let I60 = (SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(I57+0.5*Tick_Length*COS(TAPer)):0;
+            let I60 = (SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(I57+0.5*Tick_Length*COS(TAPer)):0;
                 
-                let I20=I60;
+            let I20=I60;
 
-                let I64=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(Clew_a_x+Tick_Offset*COS(LAPer)):0;
-                let I65=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(I64+Tick_Length*COS(LAPer)):0;
-                let I67=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(I64+0.5*Tick_Length*COS(LAPer)):0;
-                let I22=I67;
+            let I64=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(Clew_a_x+Tick_Offset*COS(LAPer)):0;
+            let I65=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(I64+Tick_Length*COS(LAPer)):0;
+            let I67=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(I64+0.5*Tick_Length*COS(LAPer)):0;
+            let I22=I67;
 
-                let I62=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(Head_a_x+Tick_Offset*COS(LAPer)):0;
-                let I63=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(I62+Tick_Length*COS(LAPer)):0;
-                let I66=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(I62+0.5*Tick_Length*COS(LAPer)):0;
+            let I62=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(Head_a_x+Tick_Offset*COS(LAPer)):0;
+            let I63=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(I62+Tick_Length*COS(LAPer)):0;
+            let I66=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(I62+0.5*Tick_Length*COS(LAPer)):0;
 
-                let I23=I66;
-                let I71=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(Tack_a_x+(0.5*Foot_Offset_Distance+Tick_Offset)*COS(FAPer)):0;
-                let I72=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(I71+Tick_Length*COS(FAPer)):0;
+            let I23=I66;
+            let I71=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(Tack_a_x+(0.5*Foot_Offset_Distance+Tick_Offset)*COS(FAPer)):0;
+            let I72=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(I71+Tick_Length*COS(FAPer)):0;
       
-                let I74=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(I71+0.5*Tick_Length*COS(FAPer)):0;
-                let I26=I74;
+            let I74=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(I71+0.5*Tick_Length*COS(FAPer)):0;
+            let I26=I74;
                 
-                let I69=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(Clew_a_x+(0.5*Foot_Offset_Distance+Tick_Offset)*COS(FAPer)):0;
-                let I70=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(I69+Tick_Length*COS(FAPer)):0;
-                let I73=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(I69+0.5*Tick_Length*COS(FAPer)):0;
-                let I27=I73;
+            let I69=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(Clew_a_x+(0.5*Foot_Offset_Distance+Tick_Offset)*COS(FAPer)):0;
+            let I70=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(I69+Tick_Length*COS(FAPer)):0;
+            let I73=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(I69+0.5*Tick_Length*COS(FAPer)):0;
+            let I27=I73;
                 
-                //let J18=Tack_a_y;
+            //let J18=Tack_a_y;
                 
-                let J57=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(Tack_a_y+Tick_Offset*Math.sin(TAPer)):0;
-                let J58=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(J57+Tick_Length*Math.sin(TAPer)):0;
+            let J57=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(Tack_a_y+Tick_Offset*Math.sin(TAPer)):0;
+            let J58=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(J57+Tick_Length*Math.sin(TAPer)):0;
 
-                let J60=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(J57+0.5*Tick_Length*Math.sin(TAPer)):0;
-                let J20=J60;
-                let J55=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(Head_a_y+Tick_Offset*Math.sin(TAPer)):0;
-                let J56=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(J55+Tick_Length*Math.sin(TAPer)):0;
+            let J60=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(J57+0.5*Tick_Length*Math.sin(TAPer)):0;
+            let J20=J60;
+            let J55=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(Head_a_y+Tick_Offset*Math.sin(TAPer)):0;
+            let J56=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(J55+Tick_Length*Math.sin(TAPer)):0;
 
-                let J59=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(J55+0.5*Tick_Length*Math.sin(TAPer)):0;
-                let J21=J59;
-                let J64=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(Clew_a_y+Tick_Offset*Math.sin(LAPer)):0;
-                let J65=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(J64+Tick_Length*Math.sin(LAPer)):0;
-                let J67=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(J64+0.5*Tick_Length*Math.sin(LAPer)):0;
-                let J22=J67;
-                let J62=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(Head_a_y+Tick_Offset*Math.sin(LAPer)):0;
-                let J63=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(J62+Tick_Length*Math.sin(LAPer)):0;
-                let J66=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(J62+0.5*Tick_Length*Math.sin(LAPer)):0;
-                let J23=J66;
-                let J71=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(Tack_a_y+(0.5*Foot_Offset_Distance+Tick_Offset)*Math.sin(FAPer)):0;
-                let J72=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(J71+Tick_Length*Math.sin(FAPer)):0;
-                let J74=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(J71+0.5*Tick_Length*Math.sin(FAPer)):0;
-                let J26=J74;
-                let J69=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(Clew_a_y+(0.5*Foot_Offset_Distance+Tick_Offset)*Math.sin(FAPer)):0;
-                let J70=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(J69+Tick_Length*Math.sin(FAPer)):0;
-                let J73=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(J69+0.5*Tick_Length*Math.sin(FAPer)):0;
-                let J27=J73;
+            let J59=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(J55+0.5*Tick_Length*Math.sin(TAPer)):0;
+            let J21=J59;
+            let J64=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(Clew_a_y+Tick_Offset*Math.sin(LAPer)):0;
+            let J65=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(J64+Tick_Length*Math.sin(LAPer)):0;
+            let J67=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(J64+0.5*Tick_Length*Math.sin(LAPer)):0;
+            let J22=J67;
+            let J62=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(Head_a_y+Tick_Offset*Math.sin(LAPer)):0;
+            let J63=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(J62+Tick_Length*Math.sin(LAPer)):0;
+            let J66=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(J62+0.5*Tick_Length*Math.sin(LAPer)):0;
+            let J23=J66;
+            let J71=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(Tack_a_y+(0.5*Foot_Offset_Distance+Tick_Offset)*Math.sin(FAPer)):0;
+            let J72=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(J71+Tick_Length*Math.sin(FAPer)):0;
+            let J74=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(J71+0.5*Tick_Length*Math.sin(FAPer)):0;
+            let J26=J74;
+            let J69=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(Clew_a_y+(0.5*Foot_Offset_Distance+Tick_Offset)*Math.sin(FAPer)):0;
+            let J70=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(J69+Tick_Length*Math.sin(FAPer)):0;
+            let J73=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?(J69+0.5*Tick_Length*Math.sin(FAPer)):0;
+            let J27=J73;
                 
-                let AS_data_maxx=Math.max(Tack_a_x,Clew_a_x,Head_a_x,SLU_Half_Luff_a_x,I11,SHW_Intercept_x,Foot_Offset_x,I20,I21,I22,I23,SLU_Half_Leech_Point_x,I26,I27);
+            let AS_data_maxx=Math.max(Tack_a_x,Clew_a_x,Head_a_x,SLU_Half_Luff_a_x,I11,SHW_Intercept_x,Foot_Offset_x,I20,I21,I22,I23,SLU_Half_Leech_Point_x,I26,I27);
                 
-                let AS_data_minx=Math.min(Tack_a_x,Clew_a_x,Head_a_x,SLU_Half_Luff_a_x,I11,SHW_Intercept_x,Foot_Offset_x,I20,I21,I22,I23,SLU_Half_Leech_Point_x,I26,I27);
+            let AS_data_minx=Math.min(Tack_a_x,Clew_a_x,Head_a_x,SLU_Half_Luff_a_x,I11,SHW_Intercept_x,Foot_Offset_x,I20,I21,I22,I23,SLU_Half_Leech_Point_x,I26,I27);
                
               
-                let AS_xdata_range=AS_data_maxx-AS_data_minx;
+            let AS_xdata_range=AS_data_maxx-AS_data_minx;
 
-                let AS_data_maxy=Math.max(Tack_a_y,Clew_a_y,Head_a_y,SLU_Half_Luff_a_y,J11,SHW_Intercept_y,Foot_Offset_y,J20,J21,J22,J23,SLU_Half_Leech_Point_y,J26,J27);
+            let AS_data_maxy=Math.max(Tack_a_y,Clew_a_y,Head_a_y,SLU_Half_Luff_a_y,J11,SHW_Intercept_y,Foot_Offset_y,J20,J21,J22,J23,SLU_Half_Leech_Point_y,J26,J27);
                 
-                let AS_data_miny=Math.min(Tack_a_y,Clew_a_y,Head_a_y,SLU_Half_Luff_a_y,J11,SHW_Intercept_y,Foot_Offset_y,J20,J21,J22,J23,SLU_Half_Leech_Point_y,J26,J27);
+            let AS_data_miny=Math.min(Tack_a_y,Clew_a_y,Head_a_y,SLU_Half_Luff_a_y,J11,SHW_Intercept_y,Foot_Offset_y,J20,J21,J22,J23,SLU_Half_Leech_Point_y,J26,J27);
 
-                let AS_ydata_range=AS_data_maxy-AS_data_miny;
-                let I32=Math.asin((Head_a_y-Tack_a_y)/SLU_a);
-                let I33=DEGREES(I32);
-                let I35=0.65;
-                let SLU_Label_mid_x=I35*SLU_a*COS(I32)+I20;
-                let SLU_Label_mid_y=I35*SLU_a*Math.sin(I32)+J20;
-                let I40=0.6;
-                let I39=I40*SLE_a*COS(I37)+I22;
-                let J39=I40*SLE_a*Math.sin(I37)+J22;
-                let G32=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?"Luff Length":"";
-                let G37=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?"Leech Length":"";
-                let G42=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?"Half Width":"";
-                let G48=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?"Foot Length":"";
-                let I42=Math.asin((SLE_Half_Luff_y-SLU_Half_Luff_a_y)/SHW_a);
-                let I43=DEGREES(I42);
-                let SHW_mid_x=0.5*SHW_a*COS(I42)+SLU_Half_Luff_a_x;
-                let SHW_mid_y=0.5*SHW_a*Math.sin(I42)+SLU_Half_Luff_a_y;
-                let I45=0.9;
-                let I46=SHW_mid_x;
-                let J46=I45*SHW_mid_y;
+            let AS_ydata_range=AS_data_maxy-AS_data_miny;
+            let I32=Math.asin((Head_a_y-Tack_a_y)/SLU_a);
+            let I33=DEGREES(I32);
+            let I35=0.65;
+            let SLU_Label_mid_x=I35*SLU_a*COS(I32)+I20;
+            let SLU_Label_mid_y=I35*SLU_a*Math.sin(I32)+J20;
+            let I40=0.6;
+            let I39=I40*SLE_a*COS(I37)+I22;
+            let J39=I40*SLE_a*Math.sin(I37)+J22;
+            let G32=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?"Luff Length":"";
+            let G37=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?"Leech Length":"";
+            let G42=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?"Half Width":"";
+            let G48=(SLU_a>0 && SLE_a>0 && SHW_a>0 && SF_a>0)?"Foot Length":"";
+            let I42=Math.asin((SLE_Half_Luff_y-SLU_Half_Luff_a_y)/SHW_a);
+            let I43=DEGREES(I42);
+            let SHW_mid_x=0.5*SHW_a*COS(I42)+SLU_Half_Luff_a_x;
+            let SHW_mid_y=0.5*SHW_a*Math.sin(I42)+SLU_Half_Luff_a_y;
+            let I45=0.9;
+            let I46=SHW_mid_x;
+            let J46=I45*SHW_mid_y;
 
-                let I48=0.5*SF_a*COS(Clew_Height_Angle_r)+I74;
-                let I49=0.9;
-                let I50=I48+I49*COS(FAPer);
+            let I48=0.5*SF_a*COS(Clew_Height_Angle_r)+I74;
+            let I49=0.9;
+            let I50=I48+I49*COS(FAPer);
 
-                let J48=0.5*SF_a*Math.sin(Clew_Height_Angle_r)+J74;
-                let J50=J48+I49*Math.sin(FAPer);
+            let J48=0.5*SF_a*Math.sin(Clew_Height_Angle_r)+J74;
+            let J50=J48+I49*Math.sin(FAPer);
 
-                let AS_axes_minx=-(AS_ydata_range-AS_xdata_range)/2;
-                let AS_axes_maxx=AS_ydata_range+AS_axes_minx;
-                let M13=AS_axes_minx-AS_axes_maxx;
-                let AS_axes_maxy=AS_data_maxy;
-                let AS_axes_miny=AS_data_miny;
-                let N13=AS_axes_maxy-AS_axes_miny;
-                let AS_dummy_hor_maxx=AS_axes_maxx;
-                let AS_dummy_hor_maxy=AS_axes_miny;
-                let AS_dummy_hor_minx=AS_axes_minx;
-                let AS_dummy_hor_miny=AS_axes_miny;
-                let AS_dummy_vert_maxx=AS_axes_minx;
-                let AS_dummy_vert_maxy=AS_axes_miny;
-                let AS_dummy_vert_minx=AS_axes_minx;
-                let AS_dummy_vert_miny=AS_axes_maxy;
+            let AS_axes_minx=-(AS_ydata_range-AS_xdata_range)/2;
+            let AS_axes_maxx=AS_ydata_range+AS_axes_minx;
+            let M13=AS_axes_minx-AS_axes_maxx;
+            let AS_axes_maxy=AS_data_maxy;
+            let AS_axes_miny=AS_data_miny;
+            let N13=AS_axes_maxy-AS_axes_miny;
+            let AS_dummy_hor_maxx=AS_axes_maxx;
+            let AS_dummy_hor_maxy=AS_axes_miny;
+            let AS_dummy_hor_minx=AS_axes_minx;
+            let AS_dummy_hor_miny=AS_axes_miny;
+            let AS_dummy_vert_maxx=AS_axes_minx;
+            let AS_dummy_vert_maxy=AS_axes_miny;
+            let AS_dummy_vert_minx=AS_axes_minx;
+            let AS_dummy_vert_miny=AS_axes_maxy;
 
-                let SLE_Mid_Ext_Distance=SLE_Mid_Ext_Factor*SLE_a;
+            let SLE_Mid_Ext_Distance=SLE_Mid_Ext_Factor*SLE_a;
 
-                let SLE_Mid_Ext_x=SLE_Mid_x+SLE_Mid_Ext_Distance*COS(SLE_Mid_Luff_Angle_r);
-                let SLE_Mid_Ext_y=SLE_Mid_y+SLE_Mid_Ext_Distance*Math.sin(SLE_Mid_Luff_Angle_r);
+            let SLE_Mid_Ext_x=SLE_Mid_x+SLE_Mid_Ext_Distance*COS(SLE_Mid_Luff_Angle_r);
+            let SLE_Mid_Ext_y=SLE_Mid_y+SLE_Mid_Ext_Distance*Math.sin(SLE_Mid_Luff_Angle_r);
 
-                let R40=SHW_a;
+            let R40=SHW_a;
 
-                let R52=DEGREES(FAPer);
+            let R52=DEGREES(FAPer);
 			
-	//			drawGraph( d3.select('#graph-boat'), [ I9,I10,I11,I12,I13,I14,I15,I16,I17,I18, 
-	//			        AS_dummy_hor_maxx, AS_dummy_hor_minx, AS_dummy_vert_maxx, AS_dummy_vert_minx ],
-     //           [ J9,J10,J11,J12,J13,J14,J15,J16,J17,J18, AS_dummy_hor_maxy, AS_dummy_hor_miny, AS_dummy_vert_maxy, AS_dummy_vert_miny ],0,0,0,'dummy-line');	// Dummy Hor
-
-
-
-//console.log([  
-//				        AS_dummy_hor_maxx, AS_dummy_hor_minx, AS_dummy_vert_maxx, AS_dummy_vert_minx ],
-  //              [  AS_dummy_hor_maxy, AS_dummy_hor_miny, AS_dummy_vert_maxy, AS_dummy_vert_miny ])
+	
     
-     drawGraph( d3.select('#graph-boat'), [  I9,I10,I11,I12,I13,I15,I16,I17,I18,
-        AS_dummy_hor_maxx, AS_dummy_hor_minx,AS_dummy_vert_maxx, AS_dummy_vert_minx    ],
-                [    J9,J10,J11,J12,J13,J15,J16,J17,J18, AS_dummy_vert_maxy, AS_dummy_vert_miny,AS_dummy_hor_maxy, AS_dummy_hor_miny ],0,0,0,'dummy-line');	// Dummy Hor
+            drawGraph( d3.select('#graph-boat'), [ I9,I10,I11,I12,I13,I15,I16,I17,I18, AS_dummy_hor_maxx, AS_dummy_hor_minx,AS_dummy_vert_maxx, AS_dummy_vert_minx ],
+                [ J9,J10,J11,J12,J13,J15,J16,J17,J18, AS_dummy_vert_maxy, AS_dummy_vert_miny,AS_dummy_hor_maxy, AS_dummy_hor_miny ],0,0,0,'dummy-line');	// Dummy Hor
 		
-
-				//drawGraph( d3.select('#graph-boat'), [ I9,I10,I11,I12,I13,I14,I15,I16,I17,I18 ],[ J9,J10,J11,J12,J13,J14,J15,J16,J17,J18 ]);	// LuffLeechFoot
                 I14 ?
                     drawGraph( d3.select('#graph-boat'), [ I9,I10,I11,I12,I13,I14,I15,I16,I17,I18 ],[ J9,J10,J11,J12,J13,J14,J15,J16,J17,J18 ]) :	// LuffLeechFoot 
                     drawGraph( d3.select('#graph-boat'), [ I9,I10,I11,I12,I13,I15,I16,I17,I18 ],[ J9,J10,J11,J12,J13,J15,J16,J17,J18 ]);	// LuffLeechFoot
@@ -741,13 +718,10 @@
 				drawGraph( d3.select('#graph-boat'), [ I50 ],[ J50 ],0,0,0,'',G48);	// Foot Length			
 
 
-return;
-
 				$('#SHW_Intercept_x').text(ROUND(SHW_Intercept_x,3));
-                $('#SHW_Intercept_y').text(ROUND(SHW_Intercept_y,3));
+				$('#SHW_Intercept_y').text(ROUND(SHW_Intercept_y,3));
                 $('#R41').text(ROUND(SHW_Intercept_dist,3));
                 $('#R52').text(ROUND(R52));
-
                 $("#R48").text(ROUND(R48));
                 $("#R40").text(ROUND(R40));
                 $("#SLE_Mid_Luff_Angle").text(ROUND(SLE_Mid_Luff_Angle));
@@ -787,7 +761,6 @@ return;
                 $("#Start_for_int_y").text(ROUND(Start_for_int_y,3));
                 $("#V12").text(ROUND(V12,3));
 
-
                 $("#SLU_a").text(SLU_a);
                 $("#Tick_Offset").text(Tick_Offset);
                 $("#Tick_Length").text(Tick_Length);
@@ -802,7 +775,6 @@ return;
                 $("#V6").text(ROUND(V6));
                 $("#W7").text(ROUND(W7));
                 $("#V7").text(ROUND(V7));
-
 
                 $('#AS_axes_maxx').text(ROUND(AS_axes_maxx));                 
                 $('#AS_axes_minx').text(ROUND(AS_axes_minx));                 
@@ -829,7 +801,6 @@ return;
                 $('#J74').text(ROUND(J74));                 
                 $('#J71').text(ROUND(J71));                 
                 $('#J50').text(ROUND(J50));                 
-
 
                 $('#SHW_mid_x').text(ROUND(SHW_mid_x));    
                 $('#SHW_mid_y').text(ROUND(SHW_mid_y));    
@@ -921,8 +892,7 @@ return;
                 $('#J39').text(ROUND(J39));    
                 $('#SLU_Half_Leech_Point_x').text(ROUND(SLU_Half_Leech_Point_x));    
                 $('#SLU_Half_Leech_Point_y').text(ROUND(SLU_Half_Leech_Point_y));    
-                
-                
+                                
                 $('#G32').text(G32);    
                 $('#G37').text(G37);    
                 $('#G42').text(G42);    
